@@ -15,6 +15,7 @@ api.interceptors.request.use(
       const tokenExpiry = JSON.parse(atob(authToken.split(".")[1])).exp;
       if (Date.now() >= tokenExpiry * 1000) {
         // If the token is expired, remove it from session storage
+        localStorage.removeItem("userData");
         sessionStorage.removeItem("authToken");
         // Redirect to the login page
         alert("Session expired. Please login again.");

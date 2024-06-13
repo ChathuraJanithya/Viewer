@@ -37,6 +37,7 @@ const MyPdf = () => {
       <div className="grid grid-cols-1 gap-4 mt-4 md:grid-cols-3">
         {isLoading && <div>Loading...</div>}
         {isSuccess &&
+          data?.data?.length !== 0 &&
           data?.data.map((pdf) => (
             <div
               key={pdf?._id}
@@ -78,6 +79,11 @@ const MyPdf = () => {
               <Link to={`/user/pdfView/${pdf._id}`}>View more </Link>
             </div>
           ))}
+        {isSuccess && data?.data?.length === 0 && (
+          <div className="flex justify-center text-xl font-medium text-center ">
+            No PDFs to Show add some PDFs
+          </div>
+        )}
         {isError && <div>{error}</div>}
       </div>
     </motion.div>

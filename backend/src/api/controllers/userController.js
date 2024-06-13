@@ -96,7 +96,7 @@ const signin = async (req, res) => {
         role: existingUser.role,
       },
       process.env.SECRET_KEY,
-      { expiresIn: "1min" }
+      { expiresIn: "1h" }
     );
 
     res.status(201).json({ result: userData, token: token });
