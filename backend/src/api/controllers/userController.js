@@ -12,7 +12,7 @@ const userRegisterValidation = joi.object({
   contact: joi.string().required(),
   email: joi.string().email().required(),
   password: joi.string().required(),
-  role: joi.string(),
+  role: joi.string().valid("User", "Admin"),
 });
 
 const signup = async (req, res) => {
@@ -35,9 +35,7 @@ const signup = async (req, res) => {
       contact: validation.value.contact,
       email: validation.value.email,
       password: hashedPassword,
-      role: validation.value.role
-        ? validation.value.role
-        : "66680565f16f71292041bb2b",
+      role: validation.value.role ? validation.value.role : "User",
     });
 
     const userData = {
@@ -71,12 +69,12 @@ const signin = async (req, res) => {
     const validation = userLoginValidation.validate(req.body);
     const existingUser = await User.findOne({
       email: validation.value.email,
-    }).populate("role", "roleName");
+    });
 
     const userData = {
       name: existingUser.name,
       email: existingUser.email,
-      role: existingUser.role.roleName,
+      role: existingUser.role,
     };
 
     if (!existingUser) {
@@ -95,10 +93,10 @@ const signin = async (req, res) => {
       {
         email: existingUser.email,
         id: existingUser._id,
-        role: existingUser.role.roleName,
+        role: existingUser.role,
       },
       process.env.SECRET_KEY,
-      { expiresIn: "1h" }
+      { expiresIn: "1min" }
     );
 
     res.status(201).json({ result: userData, token: token });
