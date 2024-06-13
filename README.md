@@ -14,7 +14,7 @@ This is Web Application for PDF uploading and Viewing
 5. **npm** **install**
 6. **npm** **run** **dev**
 
-**Admin can create only with database**
+**Admin role can create only with database**
 **Admin have access to View all PDFs Uploaded**
 
 **Users can self enrolled and view PDFs**
