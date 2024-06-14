@@ -81,7 +81,7 @@ const MyPdf = () => {
           ))}
         {isSuccess && data?.data?.length === 0 && (
           <div className="flex justify-center text-xl font-medium text-center ">
-            No PDFs to Show add some PDFs
+            {isAdmin ? "No PDFs found" : "No PDFs uploaded by you"}
           </div>
         )}
         {isError && <div>{error}</div>}

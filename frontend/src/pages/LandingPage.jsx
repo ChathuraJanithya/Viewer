@@ -9,9 +9,16 @@ const LandingPage = () => {
   return (
     <div className="max-w-[1440px] mx-auto px-4 w-full flex h-screen justify-center items-center">
       <div className="flex flex-col items-center justify-center">
-        <Typography variant="title" displayAs="h1" className="text-center">
-          Welcome
-        </Typography>
+        <div className="relative ">
+          <img
+            src="https://www.svgrepo.com/show/189459/traffic-sign-welcome.svg"
+            alt=" welcome-img"
+            className="w-[100px] h-[100px] bottom-[18px] -right-2 absolute"
+          />
+          <Typography variant="title" displayAs="h1" className="text-center">
+            Welcome
+          </Typography>
+        </div>
 
         <Typography variant="title2" displayAs="p" className="mt-4 text-center">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque
@@ -24,7 +31,7 @@ const LandingPage = () => {
           className="w-[200px] h-[200px] mt-8"
         />
         <Button
-          className="w-[240px] hover:scale-105 mt-8 self-start md:self-center text-white text-[20px] bg-slate-900 font-bold"
+          className="w-[240px] hover:scale-105 mt-8 self-center text-white text-[20px] bg-slate-900 font-bold"
           variant="filled"
           color="primary"
           radius="lg"
