@@ -6,12 +6,12 @@ function UserLayout() {
 
   const token = sessionStorage.getItem("authToken");
 
-  useEffect(() => {
+  /*   useEffect(() => {
     if (!token) {
       navigate("/login");
       window.reload();
     }
-  }, [token, navigate]);
+  }, [token, navigate]); */
 
   return (
     <main>

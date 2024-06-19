@@ -15,7 +15,7 @@ const MyPdf = () => {
     enabled: true,
     staleTime: Infinity,
   });
-  console.log(data);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Dialog, Disclosure, Popover } from "@headlessui/react";
 import {
   Bars3Icon,
@@ -18,6 +18,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { User } from "@nextui-org/react";
+import HeaderPopover from "./HeaderPopover";
 
 const products = [
   {
@@ -45,15 +46,11 @@ function classNames(...classes) {
 }
 
 export default function Header() {
-  const [userFirstName, setUserFirstName] = useState("");
-  const userData = JSON.parse(localStorage.getItem("userData"));
-
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const router = useLocation();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   const routerPath = router?.pathname === "/user/" ? false : true;
-
   const handleLogout = () => {
     localStorage.removeItem("userData");
     sessionStorage.removeItem("authToken");
@@ -125,21 +122,9 @@ export default function Header() {
                 </button>
               </Popover.Group>
             </div>
-            <button className="items-end px-1 ml-2 " onClick={onOpen}>
-              <div className="hidden md:block">
-                <User
-                  name={userData?.name}
-                  description={
-                    <Link href="#" size="sm" isExternal>
-                      {userData?.email}
-                    </Link>
-                  }
-                  avatarProps={{
-                    src: "https://avatars.githubusercontent.com/u/30373425?v=4",
-                  }}
-                />
-              </div>
-            </button>
+            <div className="hidden lg:flex">
+              <HeaderPopover />
+            </div>
           </nav>
         </motion.div>
 

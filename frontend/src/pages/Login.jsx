@@ -49,10 +49,16 @@ const Login = () => {
     setLoading(false);
   };
 
-  /*   const handleGoogleLogin = () => {
-    window.location.href = "http://localhost:8080/oAuth/google";
+  const handleGoogleLogin = () => {
+    try {
+      window.location.href = `${
+        import.meta.env.VITE_API_BASE_URL
+      }auth/google/callback`;
+    } catch (error) {
+      console.log(error);
+    }
   };
- */
+
   return (
     <>
       <motion.div
@@ -177,7 +183,7 @@ const Login = () => {
               Login
             </Button>
           </form>
-          {/* <div className="flex items-center justify-center w-full ">
+          <div className="flex items-center justify-center w-full ">
             <button
               className="flex items-center justify-center gap-2 mt-2 "
               onClick={handleGoogleLogin}
@@ -211,7 +217,7 @@ const Login = () => {
                 Login with Google
               </span>
             </button>
-          </div> */}
+          </div>
         </div>
       </motion.div>
 
