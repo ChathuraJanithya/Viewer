@@ -2,11 +2,11 @@ import api from "../Helpers/axios";
 
 export const createPdf = async (formData) => {
   try {
-    console.log(formData);
     const { response } = await api.post("/pdf", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
+      withCredentials: true,
     });
     return response;
   } catch (error) {

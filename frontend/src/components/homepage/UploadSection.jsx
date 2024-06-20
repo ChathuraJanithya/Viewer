@@ -43,7 +43,6 @@ const UploadSection = () => {
 
   const onSubmit = async (data) => {
     setLoading(true);
-    console.log(data);
 
     const formData = new FormData();
     formData.append("pdfName", data.pdfName);

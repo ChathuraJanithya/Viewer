@@ -3,8 +3,7 @@ import passport from "passport";
 import axios from "axios";
 import UserAuth from "../models/gooleAuthModel.js";
 import logger from "../../utils/logger.js";
-import generateToken from "../../config/generateToken.js";
-import { token } from "morgan";
+import jwt from "jsonwebtoken";
 
 const authRouter = express.Router();
 
@@ -34,30 +33,70 @@ authRouter.get("/google", async (req, res) => {
   }
 });
 
-//register or login user to DB
 authRouter.get("/login/success", async (req, res) => {
   try {
     if (req.user) {
       const userExists = await UserAuth.find({
         email: req.user._json.email,
       });
+      let token;
+      let userData;
+
       if (userExists) {
-        generateToken(res, userExists._id);
+        token = jwt.sign(
+          {
+            email: userExists.email,
+            id: userExists.id,
+            role: userExists.role ? userExists.role : "User",
+          },
+          process.env.SECRET_KEY,
+          { expiresIn: "1h" }
+        );
+
+        userData = {
+          name: req.user._json.name,
+          email: req.user._json.email,
+          role: userExists.role,
+        };
       } else {
         const newUser = new UserAuth({
           name: req.user._json.name,
           email: req.user._json.email,
-          password: Date.now(), //dummy password
+          password: Date.now().toString(), // dummy password as string
+          role: req.user._json.role ? req.user._json.role : "User",
         });
-        generateToken(res, newUser._id);
-        await newUser.save();
+
+        const savedUser = await newUser.save();
+
+        userData = {
+          name: savedUser.name,
+          email: savedUser.email,
+          role: savedUser.role ? savedUser.role : "User",
+        };
+
+        token = jwt.sign(
+          {
+            email: savedUser.email,
+            id: savedUser.id,
+            role: savedUser.role,
+          },
+          process.env.SECRET_KEY,
+          { expiresIn: "1h" }
+        );
       }
-      const userData = {
-        name: req.user._json.name,
-        email: req.user._json.email,
-        role: userExists.role,
+
+      res.cookie("jwt", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV !== "development",
+        sameSite: "strict",
+        maxAge: 30 * 24 * 60 * 60, // 30 days in milliseconds
+      });
+
+      const payload = {
+        result: userData,
       };
-      res.status(201).json({ result: userData, token: req.session.token });
+
+      res.status(201).json({ data: payload });
     } else {
       logger.error("User not authenticated");
       res.status(403).json({

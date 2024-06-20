@@ -3,7 +3,6 @@ import logger from "../../utils/logger.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import joi from "joi";
-import { token } from "morgan";
 
 // User signin
 const userRegisterValidation = joi.object({
@@ -98,6 +97,13 @@ const signin = async (req, res) => {
       process.env.SECRET_KEY,
       { expiresIn: "1h" }
     );
+
+    res.cookie("jwt", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV !== "development",
+      sameSite: "strict",
+      maxAge: 30 * 24 * 60 * 60,
+    });
 
     res.status(201).json({ result: userData, token: token });
   } catch (error) {

@@ -18,7 +18,11 @@ const Home = () => {
           withCredentials: true,
         }
       );
-      console.log(response.data);
+
+      localStorage.setItem(
+        "userData",
+        JSON.stringify(response?.data?.data?.result)
+      );
     } catch (error) {
       console.log(error);
     }

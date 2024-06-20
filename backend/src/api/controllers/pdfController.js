@@ -52,7 +52,6 @@ const getPdf = async (req, res) => {
 // Get all PDFs uploaded by a user
 const getUserPdfs = async (payload, res) => {
   try {
-    console.log(payload.user);
     const pdfs = await Pdf.find({ uploadedBy: payload.user });
 
     res.status(200).json({ data: pdfs });

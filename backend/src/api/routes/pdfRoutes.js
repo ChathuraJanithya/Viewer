@@ -26,11 +26,10 @@ pdfRouter.post("/", upload.single("pdfUrl"), async (req, res) => {
 
 pdfRouter.get("/userPdf", async (req, res) => {
   try {
-    const userId = req.user;
     const payload = {
       user: req.user,
     };
-    console.log(userId);
+
     getUserPdfs(payload, res);
   } catch (error) {
     logger.error(error);

@@ -11,13 +11,26 @@ const app = express();
 const PORT = process.env.PORT || "8090";
 app.use(morgan("dev"));
 
-app.use(cors());
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", process.env.CLIENT_URL);
+  next();
+});
+
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL,
+    credentials: true,
+    optionsSuccessStatus: 200,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 app.use(express.json({ limit: "20mb" }));
 app.use(cookieParser());
 passportConfig(app);
 
 import { AuthGuard } from "./api/middleware/auth-guard.js";
-//app.use(AuthGuard);
+app.use(AuthGuard);
 
 import authRouter from "./api/routes/authRoutes.js";
 app.use("/auth", authRouter);
